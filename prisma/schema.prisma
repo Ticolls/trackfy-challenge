@@ -1,0 +1,49 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Person {
+  id        String     @id @default(uuid()) @map("id") @db.Uuid
+  name      String     @map("name")
+  role      String     @map("role")
+  areaId    String     @map("area_id") @db.Uuid
+  area      Area       @relation(fields: [areaId], references: [id])
+  presences Presence[]
+  createdAt DateTime   @default(now()) @map("created_at")
+  updatedAt DateTime   @updatedAt @map("updated_at")
+
+  @@map("person")
+}
+
+model Area {
+  id        String     @id @default(uuid()) @map("id") @db.Uuid
+  name      String     @map("name")
+  type      String     @map("type")
+  location  String     @map("location")
+  persons   Person[]
+  presences Presence[]
+  createdAt DateTime   @default(now()) @map("created_at")
+  updatedAt DateTime   @updatedAt @map("updated_at")
+
+  @@map("area")
+}
+
+model Presence {
+  id         String   @id @default(uuid()) @map("id") @db.Uuid
+  personId   String   @map("person_id") @db.Uuid
+  areaId     String   @map("area_id") @db.Uuid
+  occurredAt DateTime @default(now()) @map("occurred_at")
+
+  person Person @relation(fields: [personId], references: [id])
+  area   Area   @relation(fields: [areaId], references: [id])
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("presence")
+}
