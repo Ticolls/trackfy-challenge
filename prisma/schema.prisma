@@ -22,7 +22,7 @@ model Person {
 
 model Area {
   id        String     @id @default(uuid()) @map("id") @db.Uuid
-  name      String     @map("name")
+  name      String     @unique @map("name")
   type      String     @map("type")
   location  String     @map("location")
   persons   Person[]
