@@ -17,7 +17,7 @@ Siga estas instruções para executar o projeto em sua máquina local.
 1. Clone o repositório:
 ```bash
 git clone git@github.com:Ticolls/trackfy-challenge.git
-cd trackfy
+cd trackfy-challenge
 ```
 
 2. Copie o arquivo de ambiente de exemplo:
