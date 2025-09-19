@@ -72,7 +72,9 @@ export class PresenceRepository {
     if (filters.startDate || filters.endDate) {
       where.occurredAt = {};
       if (filters.startDate) {
-        where.occurredAt.gte = filters.startDate;
+        const startDateTime = new Date(filters.startDate);
+        startDateTime.setHours(0, 0, 0, 0);
+        where.occurredAt.gte = startDateTime;
       }
       if (filters.endDate) {
         const endDateTime = new Date(filters.endDate);
