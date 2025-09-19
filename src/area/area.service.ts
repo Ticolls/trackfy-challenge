@@ -44,7 +44,7 @@ export class AreaService {
 
       return new AreaResponseDto(area);
     } catch (error) {
-      handlePrismaError(error, 'Área');
+      handlePrismaError(error, 'Área', id);
     }
   }
 }

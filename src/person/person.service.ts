@@ -47,7 +47,7 @@ export class PersonService {
 
       return new PersonResponseDto(person);
     } catch (error) {
-      handlePrismaError(error, 'Pessoa');
+      handlePrismaError(error, 'Pessoa', id);
     }
   }
 }

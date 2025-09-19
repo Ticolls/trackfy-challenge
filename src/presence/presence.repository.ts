@@ -3,6 +3,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { CreatePresenceDto } from './dto/create-presence.dto';
 import { PresenceQueryDto } from './dto/presence-query.dto';
 import { Presence } from '@prisma/client';
+import { AggregatePeriodQueryDto } from './dto/aggregate-period-query.dto';
 
 @Injectable()
 export class PresenceRepository {
@@ -55,5 +56,33 @@ export class PresenceRepository {
     });
 
     return presences;
+  }
+
+  async countByArea(areaId: string) {
+    const count = await this.prisma.presence.count({
+      where: { areaId },
+    });
+
+    return { count };
+  }
+
+  async countByPeriod(filters: AggregatePeriodQueryDto) {
+    const where: any = {};
+
+    if (filters.startDate || filters.endDate) {
+      where.occurredAt = {};
+      if (filters.startDate) {
+        where.occurredAt.gte = filters.startDate;
+      }
+      if (filters.endDate) {
+        const endDateTime = new Date(filters.endDate);
+        endDateTime.setHours(23, 59, 59, 999);
+        where.occurredAt.lte = endDateTime;
+      }
+    }
+
+    const count = await this.prisma.presence.count({ where });
+
+    return { count };
   }
 }

@@ -6,6 +6,7 @@ import { handlePrismaError } from 'src/exceptions/handlePrismaError';
 import { PresenceQueryDto } from './dto/presence-query.dto';
 import { PersonRepository } from 'src/person/person.repository';
 import { AreaRepository } from 'src/area/area.repository';
+import { AggregatePeriodQueryDto } from './dto/aggregate-period-query.dto';
 
 @Injectable()
 export class PresenceService {
@@ -57,6 +58,31 @@ export class PresenceService {
       const presences = await this.presenceRepository.findMany(filters);
 
       return presences.map((presence) => new PresenceResponseDto(presence));
+    } catch (error) {
+      handlePrismaError(error, 'Presença');
+    }
+  }
+
+  async aggregateByArea(areaId: string) {
+    try {
+      const areaExists = await this.areaRepository.exists(areaId);
+
+      if (!areaExists) {
+        throw new BadRequestException('Não existe uma área com esse ID');
+      }
+      const agreggate = await this.presenceRepository.countByArea(areaId);
+
+      return agreggate;
+    } catch (error) {
+      handlePrismaError(error, 'Presença', areaId);
+    }
+  }
+
+  async aggregateByPeriod(filters: AggregatePeriodQueryDto) {
+    try {
+      const agreggate = await this.presenceRepository.countByPeriod(filters);
+
+      return agreggate;
     } catch (error) {
       handlePrismaError(error, 'Presença');
     }
