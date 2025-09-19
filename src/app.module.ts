@@ -3,8 +3,9 @@ import { PersonModule } from './person/person.module';
 import { AreaModule } from './area/area.module';
 import { PresenceModule } from './presence/presence.module';
 import { PrismaModule } from './prisma/prisma.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
-  imports: [PersonModule, AreaModule, PresenceModule, PrismaModule],
+  imports: [PersonModule, AreaModule, PresenceModule, PrismaModule, AuthModule],
 })
 export class AppModule {}
